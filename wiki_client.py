@@ -85,6 +85,10 @@ class WikiClient(object):
         for sentence in sentences:
             if not sentence.endswith('.'):
                 sentence = sentence + '.'
+
+            # Ensure sentence is an instance of str
+            if isinstance(sentence, unicode):
+                sentence = sentence.encode('utf-8')
             all_sentences.append(sentence)
 
         return all_sentences

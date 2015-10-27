@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from wiki_client import WikiClient
-from parser
-from reader
+import parser
+import reader
 import traceback
 import sys
 
