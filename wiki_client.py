@@ -67,6 +67,7 @@ class WikiClient(object):
         text = ''
         for paragraph in self.paragraphs:
             text += paragraph
+            text += '\n'
         return text
 
     def _get_sentences_from_paragraphs_soup(self, paragraph_wise=False):

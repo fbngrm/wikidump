@@ -62,7 +62,7 @@ class WikiDump(object):
 
     def _export(self, url):
             # Get the filename from url
-            filename = url.split('/')[-1] + '.json'
+            filename = url.split('/')[-1]
             dump_path = os.path.abspath(
                 os.path.join(args.get('dump'), filename))
             dump_data = dict()
@@ -76,7 +76,13 @@ class WikiDump(object):
             if self._args.get('paragraphs'):
                 dump_data['paragraphs'] = self._wikiclient.paragraphs
 
-            dump.dump_json(dump_data, dump_path)
+            dump.dump_json(dump_data, dump_path + '.json')
+
+            if self._args.get('text'):
+                text = dump_data['text']
+                if isinstance(text, str):
+                    text = text.decode('utf-8')
+                dump.dump_unicode(text, dump_path + '.txt')
 
 
 if __name__ == '__main__':
