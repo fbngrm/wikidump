@@ -15,19 +15,29 @@ def parse():
             '--url',
             help='url of the wiki article',
             required=False,
+            metavar='',
             )
         group.add_argument(
             '-ul',
             '--url-file',
             help='path to a file containing all urls',
             required=False,
+            metavar='',
             )
 
         parser.add_argument(
+            '-r',
+            '--recursion-depth',
+            metavar='',
+            help='depth to follow links recursively',
+            required=False,
+            )
+        parser.add_argument(
             '-d',
             '--dump',
-            help='path for data export',
-            required=True,
+            metavar='',
+            help='path to directory for data export',
+            required=False,
             )
         parser.add_argument(
             '-p',
@@ -47,6 +57,13 @@ def parse():
             '-l',
             '--links',
             help='get all links from the text',
+            required=False,
+            action='store_true',
+            )
+        parser.add_argument(
+            '-v',
+            '--verbose',
+            help='print data to stdout',
             required=False,
             action='store_true',
             )

@@ -3,7 +3,6 @@
 
 import requests
 from bs4 import BeautifulSoup
-from os import linesep
 
 
 """Varaiable/statement names conatining the string `soup` are referencing
@@ -16,41 +15,59 @@ MIN_LEN = 3
 
 class WikiClient(object):
 
-    def __init__(self, wiki_url):
+    def __init__(self):
         self._soup = None
         self._links = None
-        self._text = None
         self._paragraphs = None
-        self._url = wiki_url
-        self.dump(wiki_url)
+        self._text = None
 
     def dump(self, url):
         page = requests.get(url)
         soup = BeautifulSoup(page.text, 'html.parser')
+        self._paragraphs = None
+        self._text = None
+        self._links = None
         self._soup = self._get_cleared_paragraphs_soup(soup)
 
     @property
     def links(self):
+        if not self._soup:
+            return []
         if not self._links:
             self._links = self._get_links_from_paragraphs_soup()
         return self._links
 
     @property
     def text(self):
+        if not self._soup:
+            return ''
         if not self._text:
-            text = ''
-            sentences = self._get_sentences_from_paragraphs_soup(
-                paragraph_wise=True)
-            for sentence in sentences:
-                text = text + sentence
-            self._text = text
+            self._text = self._get_text_from_paragraphs()
         return self._text
 
     @property
     def paragraphs(self):
+        if not self._soup:
+            return []
         if not self._paragraphs:
-            self._paragraphs = self._text.split(linesep)
+            self._paragraphs = self._get_paragraphs_text()
         return self._paragraphs
+
+    def _get_paragraphs_text(self):
+        paragraphs = []
+        for paragraph_soup in self._soup:
+            text = paragraph_soup.get_text()
+            # Ensure sentence is an instance of str
+            if isinstance(text, unicode):
+                text = text.encode('utf-8')
+            paragraphs.append(text)
+        return paragraphs
+
+    def _get_text_from_paragraphs(self):
+        text = ''
+        for paragraph in self.paragraphs:
+            text += paragraph
+        return text
 
     def _get_sentences_from_paragraphs_soup(self, paragraph_wise=False):
         """Get all sentences from all paragraphs in the given
@@ -84,12 +101,12 @@ class WikiClient(object):
 
         for sentence in sentences:
             if not sentence.endswith('.'):
-                sentence = sentence + '.'
+                sentence = sentence + '. '
 
             # Ensure sentence is an instance of str
             if isinstance(sentence, unicode):
                 sentence = sentence.encode('utf-8')
-            all_sentences.append(sentence)
+            all_sentences.append()
 
         return all_sentences
 
@@ -98,7 +115,7 @@ class WikiClient(object):
            and link <a> tags.
         """
         for tag in paragraph_soup.findAll():
-            if tag.name.lower() not in ["a", "b"]:
+            if tag.name.lower() not in ["a", "b", "i"]:
                 tag.extract()
         return paragraph_soup
 
