@@ -48,7 +48,6 @@ class WikiDump(object):
         except Exception:
             print 'failed to dump data'
             traceback.print_exc()
-            sys.exit()
 
     def _print(self):
         if self._args.get('text'):
@@ -63,8 +62,12 @@ class WikiDump(object):
     def _export(self, url):
             # Get the filename from url
             filename = url.split('/')[-1]
-            dump_path = os.path.abspath(
+            dump_dir = os.path.abspath(
                 os.path.join(args.get('dump'), filename))
+            if not os.path.exists(dump_dir):
+                os.makedirs(dump_dir)
+            dump_path = os.path.abspath(
+                os.path.join(dump_dir, filename))
             dump_data = dict()
 
             if self._args.get('text'):
@@ -82,7 +85,17 @@ class WikiDump(object):
                 text = dump_data['text']
                 if isinstance(text, str):
                     text = text.decode('utf-8')
-                dump.dump_unicode(text, dump_path + '.txt')
+                dump.dump_unicode(text, dump_path + '_text.txt')
+
+            if self._args.get('links'):
+                links = ''
+                for link_dict in dump_data['links']:
+                    link = link_dict['href']
+                    if isinstance(link, str):
+                        link = link.decode('utf-8')
+                    links += link
+                    links += '\n'
+                dump.dump_unicode(links, dump_path + '_links.txt')
 
 
 if __name__ == '__main__':
