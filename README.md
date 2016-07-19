@@ -1,6 +1,6 @@
-# WikiDump
-
 <img src="https://upload.wikimedia.org/wikipedia/commons/8/80/Wikipedia-logo-v2.svg"></img>
+
+# WikiDump
 
 Dump Wikipedia articles to file or console. Follow all links in the article recursively.
 
