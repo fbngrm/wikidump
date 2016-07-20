@@ -22,4 +22,4 @@ Dump Wikipedia articles to file or console. Follow all links in the article recu
 
 Dump article *Fashion* and all linked articles to ~/data directory. Extract all links and get the text pragraph-wise.
 
-```python wikidump.py -u https://en.wikipedia.org/wiki/Fashion -r 1 -d ~/data/ -p -l```
+```python wikidump.py -u https://en.wikipedia.org/wiki/Fashion -r 1 -d ~/data/ -t -p -l```
