@@ -4,7 +4,13 @@
 
 Dump Wikipedia articles to file or console. Follow all links in the article recursively.
 
-## Usage
+# Installation
+```
+pip install requirements.txt
+git clone git@github.com:fgrimme/wikidump.git 
+```
+
+# Usage
 
 ```
 -h  --help             show this help message and exit
@@ -23,3 +29,5 @@ Dump Wikipedia articles to file or console. Follow all links in the article recu
 Dump article *Fashion* and all linked articles to ~/data directory. Extract all links and get the text pragraph-wise.
 
 ```python wikidump.py -u https://en.wikipedia.org/wiki/Fashion -r 1 -d ~/data/ -t -p -l```
+
+
